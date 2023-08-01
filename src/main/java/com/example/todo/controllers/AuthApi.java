@@ -2,12 +2,17 @@ package com.example.todo.controllers;
 
 import com.example.todo.dto.AuthenticationDTO;
 import com.example.todo.dto.AuthenticationResponse;
+import com.example.todo.dto.SignupDTO;
+import com.example.todo.dto.UserDTO;
+import com.example.todo.services.auth.AuthService;
 import com.example.todo.services.jwt.UserDetailsServiceImpl;
 import com.example.todo.services.util.JwtUtil;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -22,16 +27,28 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
-@OpenAPIDefinition(info = @Info(title = "Authentication API", description = "Authentication api"))
-public class AuthenticationController {
+@RequestMapping
+@OpenAPIDefinition(info = @Info(title = "Authentication or Authorization API", description = "Authentication or Authorization api"))
+public class AuthApi {
+
+    private final AuthService authService;
 
     private final JwtUtil jwtUtil;
 
     private final AuthenticationManager authenticationManager;
 
     private final UserDetailsServiceImpl userDetailsService;
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> signupUser(@RequestBody SignupDTO signupDTO) {
+        System.out.println(1);
+        UserDTO createdUser = authService.createUser(signupDTO);
+        if (createdUser == null) {
+            return new ResponseEntity<>("User not created, come again later!", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    }
 
     @PostMapping("/authenticate")
     public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationDTO authenticationDTO, HttpServletResponse response) throws BadCredentialsException, DisabledException, UsernameNotFoundException, IOException {
@@ -50,4 +67,5 @@ public class AuthenticationController {
 
         return new AuthenticationResponse(jwt);
     }
+
 }
