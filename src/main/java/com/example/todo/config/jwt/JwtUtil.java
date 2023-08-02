@@ -1,4 +1,4 @@
-package com.example.todo.services.util;
+package com.example.todo.config.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

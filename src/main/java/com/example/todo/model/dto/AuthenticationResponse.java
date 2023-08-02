@@ -1,4 +1,4 @@
-package com.example.todo.dto;
+package com.example.todo.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignupDTO {
+public class AuthenticationResponse {
 
-    private String name;
+    private String jwtToken;
 
-    private String email;
-
-    private String password;
 
 }

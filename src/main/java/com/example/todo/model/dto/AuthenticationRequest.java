@@ -1,17 +1,17 @@
-package com.example.todo.dto;
+package com.example.todo.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationResponse {
+public class AuthenticationRequest {
 
-    private String jwtToken;
+    private String email;
 
-
+    private String password;
 }

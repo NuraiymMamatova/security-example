@@ -1,6 +1,6 @@
-package com.example.todo.services.jwt;
+package com.example.todo.services.servicesimpl;
 
-import com.example.todo.entities.User;
+import com.example.todo.model.entities.User;
 import com.example.todo.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
