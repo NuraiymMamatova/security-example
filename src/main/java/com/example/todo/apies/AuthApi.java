@@ -1,12 +1,12 @@
-package com.example.todo.controllers;
+package com.example.todo.apies;
 
-import com.example.todo.dto.AuthenticationDTO;
-import com.example.todo.dto.AuthenticationResponse;
-import com.example.todo.dto.SignupDTO;
-import com.example.todo.dto.UserDTO;
-import com.example.todo.services.auth.AuthService;
-import com.example.todo.services.jwt.UserDetailsServiceImpl;
-import com.example.todo.services.util.JwtUtil;
+import com.example.todo.model.dto.AuthenticationRequest;
+import com.example.todo.model.dto.AuthenticationResponse;
+import com.example.todo.model.dto.SignupRequest;
+import com.example.todo.model.dto.SignupResponse;
+import com.example.todo.services.AuthService;
+import com.example.todo.services.servicesimpl.UserServiceImpl;
+import com.example.todo.config.jwt.JwtUtil;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,12 +38,12 @@ public class AuthApi {
 
     private final AuthenticationManager authenticationManager;
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserServiceImpl userDetailsService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signupUser(@RequestBody SignupDTO signupDTO) {
+    public ResponseEntity<?> signupUser(@RequestBody SignupRequest signupRequest) {
         System.out.println(1);
-        UserDTO createdUser = authService.createUser(signupDTO);
+        SignupResponse createdUser = authService.createUser(signupRequest);
         if (createdUser == null) {
             return new ResponseEntity<>("User not created, come again later!", HttpStatus.BAD_REQUEST);
         }
@@ -51,9 +51,9 @@ public class AuthApi {
     }
 
     @PostMapping("/authenticate")
-    public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationDTO authenticationDTO, HttpServletResponse response) throws BadCredentialsException, DisabledException, UsernameNotFoundException, IOException {
+    public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws BadCredentialsException, DisabledException, UsernameNotFoundException, IOException {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationDTO.getEmail(), authenticationDTO.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Incorrect username or password!");
         } catch (DisabledException e) {
@@ -61,7 +61,7 @@ public class AuthApi {
             return null;
         }
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationDTO.getEmail());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
 
         final String jwt = jwtUtil.generateToken(userDetails.getUsername());
 

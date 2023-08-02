@@ -1,4 +1,4 @@
-package com.example.todo.dto;
+package com.example.todo.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class SignupResponse {
 
     private Long id;
 
