@@ -5,6 +5,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +24,22 @@ import java.util.function.Function;
 public class JwtUtil {
 
     public static final String secret = "BEGINRSAPRIVATEKEYMIICXgIBAAKBgQCtrKVnwse4anfX+JzM7imShXZUC+QBXQ11A5bOWwHFkXc4nTfEOr3fJjnRSU5A3IROFU/pVVNiXJNkl7qQZK5mYb8j3NgqX8zZJG7IwLJ/Pm2sRW5Qj32C/uJum64Q/iEIsCg/mJjDLh1lylEMEuzKgTdWtoeLfxDBL2AJ20qXzQIDAQABAoGBAKNXi0GpmjnCOPDxLFg5bvQVfhLSFCGMKQny1DVEtsfgZmbixv5R2R41T4+dCHJMdEsUFFJ6I7CRLTcg1SDU8IhcAWCBRSNeVuomCHlQG16ti8HxwhiwIcjvDz/zNC2sL5ZJ2eJnhbtXLdf6pxxO1pA5vLp1AX06IaETO977XvupAkEA+ZgtGZybyUkftEA3ekXc5eLoW+zgU0C1fATWcIZ8Iq5YV1BW+3oAzf8HgIbkQh4LM2qa6An3l+vWNXR4wICHkwJBALIhrcdJqKw36qiyenq+m78klp5SnurQifVt0Sy1GMWyOUqYz5jKt9sGo9Qn6GDuYe/XGXKWQW25PkEYXxxPPx8CQQCpICyvRidp5VrOURVGjUB5pZ+9am02/In9V2nXJcnH1kuWHqJSFQGmlEEJHl5dTu5YEMyWnupezzd/UUThbDZxAkAzTNO5QxNalbf04YG4e9Bq2eSur+iog2pXzkqhb3404UDypNOUkz0jzOO9o8ieschuxCnGAFPTf7fYE2bAxmnNAkEA0/3bdsvJclquypqP9CQeQnxGwQtWz6+yn07gj3U1V19mdeKCUZWklRarrcr67u9DdEx+JowyEY/ppzgeQtW01g==ENDRSAPRIVATEKEY";
+
+//    private SecurityScheme createAPIKeyScheme() {
+//        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+//                .bearerFormat("JWT").scheme("bearer");
+//    }
+//
+//    @Bean
+//    public OpenAPI openAPI() {
+//        return new OpenAPI().addSecurityItem(new SecurityRequirement().addList("Bearer Authentication")).components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme())).info(new Info().title("TODO-LIST")
+//                .description("Todo project is an application specially built to keep track of errands or tasks that need to be done.")
+//                .version("1.0"));
+////                .contact(new Contact().name("Nuraiym Mamatova")
+////                        .email("nuraiym").url("nuraiym9@gmail.com"))
+////                .license(new License().name("License of API")
+////                        .url("API license URL")));
+//    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

@@ -24,4 +24,8 @@ public class Todo {
     @ManyToOne(cascade = {MERGE, DETACH, REFRESH}, fetch = FetchType.EAGER)
     private User user;
 
+    public boolean getCompleted() {
+        return completed;
+    }
+
 }

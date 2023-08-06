@@ -4,11 +4,10 @@ import com.example.todo.model.dto.AuthenticationRequest;
 import com.example.todo.model.dto.AuthenticationResponse;
 import com.example.todo.model.dto.SignupRequest;
 import com.example.todo.model.dto.SignupResponse;
-import com.example.todo.services.AuthService;
+import com.example.todo.services.UserService;
 import com.example.todo.services.servicesimpl.UserServiceImpl;
 import com.example.todo.config.jwt.JwtUtil;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,20 +18,19 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
-@OpenAPIDefinition(info = @Info(title = "Authentication or Authorization API", description = "Authentication or Authorization api"))
+@RequestMapping("/authApi")
+@Tag(name = "Authentication or Authorization API", description = "Authentication or Authorization api")
+@CrossOrigin("*")
+//@SecurityRequirement(name = "todo")
 public class AuthApi {
 
-    private final AuthService authService;
+    private final UserService userService;
 
     private final JwtUtil jwtUtil;
 
@@ -43,7 +41,7 @@ public class AuthApi {
     @PostMapping("/sign-up")
     public ResponseEntity<?> signupUser(@RequestBody SignupRequest signupRequest) {
         System.out.println(1);
-        SignupResponse createdUser = authService.createUser(signupRequest);
+        SignupResponse createdUser = userService.createUser(signupRequest);
         if (createdUser == null) {
             return new ResponseEntity<>("User not created, come again later!", HttpStatus.BAD_REQUEST);
         }
